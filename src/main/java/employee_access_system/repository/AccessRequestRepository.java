@@ -1,5 +1,6 @@
 package employee_access_system.repository;
 
+import employee_access_system.dto.EmployeeRequestSummaryDTO;
 import employee_access_system.dto.RequestSummaryDTO;
 import employee_access_system.entity.AccessRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,18 @@ public interface AccessRequestRepository extends JpaRepository<AccessRequest, Lo
             ON e.id = ar.employee_id
         """, nativeQuery = true)
     List<RequestSummaryDTO> getRequestSummaryNative();
+
+
+    @Query(value = """
+    SELECT 
+        e.name AS employeeName,
+        ar.status AS status,
+        COUNT(ar.id) AS totalRequest
+    FROM access_requests ar
+    JOIN employees e 
+        ON e.id = ar.employee_id
+    GROUP BY e.name, ar.status
+    ORDER BY e.name
+""", nativeQuery = true)
+    List<EmployeeRequestSummaryDTO> getEmployeeRequestSummary();
 }

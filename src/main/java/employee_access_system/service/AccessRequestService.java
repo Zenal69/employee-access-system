@@ -1,4 +1,5 @@
 package employee_access_system.service;
+import employee_access_system.dto.EmployeeRequestSummaryDTO;
 import employee_access_system.dto.RequestSummaryDTO;
 import employee_access_system.entity.AccessRequest;
 import employee_access_system.repository.AccessRequestRepository;
@@ -70,5 +71,9 @@ public class AccessRequestService {
 
     public List<RequestSummaryDTO> getRequestSummaryNative() {
         return repository.getRequestSummaryNative();
+    }
+
+    public List<EmployeeRequestSummaryDTO> getEmployeeRequestSummary() {
+        return repository.getEmployeeRequestSummary();
     }
 }

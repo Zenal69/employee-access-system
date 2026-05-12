@@ -1,4 +1,5 @@
 package employee_access_system.controller;
+import employee_access_system.dto.EmployeeRequestSummaryDTO;
 import employee_access_system.dto.RequestSummaryDTO;
 import employee_access_system.entity.AccessRequest;
 import employee_access_system.service.AccessRequestService;
@@ -42,13 +43,18 @@ public class AccessRequestController {
         return service.getPendingRequests();
     }
 
-    @GetMapping("/status-summary")
+    @GetMapping("/summary/status")
     public Map<String, Long> getSummary() {
         return service.getRequestSummary();
     }
 
-    @GetMapping("/all-data-summary")
+    @GetMapping("/summary/data")
     public List<RequestSummaryDTO> getNativeSummary() {
         return service.getRequestSummaryNative();
+    }
+
+    @GetMapping("/summary/employee")
+    public List<EmployeeRequestSummaryDTO> getEmployeeSummary() {
+        return service.getEmployeeRequestSummary();
     }
 }
