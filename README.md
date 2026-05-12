@@ -116,4 +116,4 @@ Cloud deployment (AWS / Render / Railway)
 
 
 Author
-Built by Zaenal
+by Zaenal
