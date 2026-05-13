@@ -1,22 +1,33 @@
 # 🚀 Employee Access System
 
-A Spring Boot-based backend system for managing employee access requests, built with PostgreSQL and Docker support.
-
-This project demonstrates a clean layered architecture, RESTful API design, and containerized deployment using Docker.
+A containerized microservices-based backend system for managing employees and access requests using Spring Boot, PostgreSQL, Docker, and REST API communication.
 
 ---
 
-## 📌 Overview
+# 📌 Overview
 
-Employee Access System is a backend application designed to manage employees and their access requests within an organization.
+Employee Access System is a backend application designed to manage employees and their application access requests within an organization.
 
-It is built using Spring Boot and follows best practices such as layered architecture and separation of concerns.
+This project demonstrates:
 
-The application is fully containerized using Docker and PostgreSQL for easy setup and deployment.
+- Microservices architecture
+- REST API communication between services
+- Docker containerization
+- Layered architecture implementation
+- Java Stream usage
+- Native SQL Query implementation
+- Spring IoC & Dependency Injection
+
+The system is split into two independent services:
+
+- **employee-service**
+- **access-service**
+
+Both services communicate through REST APIs and are orchestrated using Docker Compose.
 
 ---
 
-## 🧰 Tech Stack
+# 🧰 Tech Stack
 
 - Java 17
 - Spring Boot 3.x
@@ -27,93 +38,140 @@ The application is fully containerized using Docker and PostgreSQL for easy setu
 - Docker & Docker Compose
 - Maven
 - SpringDoc OpenAPI (Swagger UI)
+- REST Template
+- Lombok
 
 ---
 
-## 🏗 Architecture
+# 🏗 Microservices Architecture
 
-The project follows a standard layered architecture:
+```text
+Client
+   ↓
+access-service (8091)
+   ↓ REST API Communication
+employee-service (8090)
+   ↓
+PostgreSQL
+
+📦 Services
+Service	Port	    Description
+employee-service	8090	Manage employee data
+access-service	    8091	Manage access requests
+PostgreSQL	        5432	Database
+🧠 Architecture Pattern
+
+Each service follows a layered architecture:
 
 Controller → Service → Repository → Database
+Layer Responsibilities
+Controller → Handle HTTP requests and responses
+Service → Business logic implementation
+Repository → Database access using Spring Data JPA
+Database → PostgreSQL persistent storage
 
-### Layer Responsibilities:
-- Controller → Handles HTTP requests and responses
-- Service → Contains business logic
-- Repository → Handles database operations using JPA
-- Database → PostgreSQL as persistent storage
+🔥 Features
+Employee Service
+Create employee
+Get employee list
+Get employee by ID
+Access Service
+Create access request
+Approve access request
+Reject access request
+Get pending requests
+Request summary using Java Stream
+Native SQL Query summary
+REST communication with employee-service
 
----
-
-## 🐳 Running with Docker
-
+🐳 Running with Docker
 Make sure Docker and Docker Compose are installed.
 
-### Clone repository
-```bash
+Clone Repository
 git clone https://github.com/Zenal69/employee-access-system.git
 cd employee-access-system
 
-Run application
-docker compose up --build
+Build Services
+cd employee-service
+mvn clean package
 
-Stop application
+cd ../access-service
+mvn clean package
+Run Docker Compose
+docker compose up --build
+Stop Application
 docker compose down
 
-⚙️ Services
-Service	URL / Port
-Spring Boot App	http://localhost:8090
-
-PostgreSQL	localhost:5432
-Swagger UI	http://localhost:8090/swagger-ui/index.html
-
-⚙️ Environment Variables
+⚙️ Docker Environment Variables
 SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/employee_access_system
 SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=postgres
 
 💻 Running Locally (Without Docker)
-Create database
+Create Database
 CREATE DATABASE employee_access_system;
+Configure application.properties
+employee-service
+server.port=8090
 
-application.properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/employee_access_system
 spring.datasource.username=postgres
 spring.datasource.password=postgres
 
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+access-service
+server.port=8091
 
-Run app
-mvn spring-boot:run
+spring.datasource.url=jdbc:postgresql://localhost:5432/employee_access_system
+spring.datasource.username=postgres
+spring.datasource.password=postgres
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 
 📡 API Endpoints
-Employee
-GET /api/employees → Get all employees
-POST /api/employees → Create employee
-Access Request
-GET /api/access-requests → Get all access requests
-POST /api/access-requests → Create access request
+Employee Service
+Method	Endpoint	    Description
+GET	/employees	        Get all employees
+GET	/employees/{id}	    Get employee by ID
+POST	/employees	    Create employee
+
+Access Service
+Method	Endpoint	            Description
+GET	/requests	                Get all requests
+POST	/requests	            Create request
+PUT	/requests/{id}/approve	    Approve request
+PUT	/requests/{id}/reject	    Reject request
+GET	/requests/pending	        Get pending requests
+GET	/requests/summary/status	Request summary
+GET	/requests/employee/{id}	    Get employee via REST communication
 
 📖 Swagger UI
+Employee Service
 http://localhost:8090/swagger-ui/index.html
+Access Service
+http://localhost:8091/swagger-ui/index.html
 
-📌 Project Highlights
-Dockerized Spring Boot application
-Clean layered architecture
-PostgreSQL integration with JPA
+🧪 Technical Highlights
+Spring IoC & Dependency Injection
+Java Stream API usage
+Native SQL Query implementation
 RESTful API design
-Swagger documentation
-Environment-based configuration
-Ready for microservices migration
+Dockerized microservices architecture
+Inter-service communication
+Layered architecture
+PostgreSQL integration
+Swagger API documentation
 
-Future Improvements
+🚀 Future Improvements
 JWT Authentication & Authorization
-Role-Based Access Control (RBAC)
-Microservices architecture split
-CI/CD pipeline with GitHub Actions
-Cloud deployment (AWS / Render / Railway)
+API Gateway
+Service Discovery
+Separate database per service
+Kafka/RabbitMQ event-driven communication
+CI/CD with GitHub Actions
+Cloud deployment (AWS / Railway / Render)
 
-
-Author
-by Zaenal
+👨‍💻 Author
+Developed by Zaenal

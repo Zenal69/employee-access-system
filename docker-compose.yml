@@ -4,29 +4,34 @@ services:
 
   postgres:
     image: postgres:14
-
     container_name: postgres_db
-
     environment:
       POSTGRES_DB: employee_access_system
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-
     ports:
       - "5432:5432"
 
-  app:
-    build: .
-
-    container_name: employee_access_app
-
+  employee-service:
+    build: ./employee-service
+    container_name: employee_service
     ports:
       - "8090:8090"
-
-    depends_on:
-      - postgres
-
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/employee_access_system
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
+
+  access-service:
+    build: ./access-service
+    container_name: access_service
+    ports:
+      - "8091:8091"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/employee_access_system
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - postgres
